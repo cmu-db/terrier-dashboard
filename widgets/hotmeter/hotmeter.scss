@@ -1,0 +1,51 @@
+// ----------------------------------------------------------------------------
+// Mixins
+// ----------------------------------------------------------------------------
+@mixin transition($transition-property, $transition-time, $method) {
+  -webkit-transition: $transition-property $transition-time $method;
+  -moz-transition: $transition-property $transition-time $method;
+  -o-transition: $transition-property $transition-time $method;
+  transition: $transition-property $transition-time $method;
+}
+
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color:  #9c4274;
+
+$title-color:       rgba(255, 255, 255, 0.7);
+$moreinfo-color:    rgba(2, 2, 2, 0.6);
+
+$meter-background:  darken($background-color, 15%);
+
+// ----------------------------------------------------------------------------
+// Widget-meter styles
+// ----------------------------------------------------------------------------
+.widget-hotmeter {
+
+  background-color: $background-color;
+  @include transition(background-color, 0.5s, linear);
+
+  input.meter {
+    background-color: $meter-background;
+    color: #fff;
+  }
+
+  .title {
+    color: $title-color;
+  }
+
+  .more-info {
+    color: $moreinfo-color;
+  }
+
+  .updated-at {
+    color: rgba(0, 0, 0, 0.3);
+  }
+
+}
+.hotness4 { background-color: #00C176; }
+.hotness3 { background-color: #88C100; }
+.hotness2 { background-color: #FABE28; }
+.hotness1 { background-color: #FF8A00; }
+.hotness0 { background-color: #FF003C; }

@@ -1,0 +1,8 @@
+{
+  "goBaseUrl": "https://build.go.cd",
+  "jenkinsBaseUrl": "http://jenkins.db.cs.cmu.edu:8080",
+  "builds": [
+    {"id": "cmu-db/terrier", "server": "Travis"},
+    {"id": "jenkins id is not being used but travis id above is still important^", "server": "Jenkins"}
+  ]
+}
