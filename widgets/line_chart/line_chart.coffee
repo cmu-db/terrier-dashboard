@@ -50,7 +50,7 @@ class Dashing.LineChart extends Dashing.Widget
           yAxes: [{
             ticks: {
                 fontColor: '#D3D3D3'
-                fontSize: 14
+                fontSize: 22
             }
           }]
         }
