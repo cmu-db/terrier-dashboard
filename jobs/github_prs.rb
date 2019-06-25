@@ -1,3 +1,4 @@
+=begin
 require 'octokit'
 
 SCHEDULER.every '1h', :first_in => 0 do |job|
@@ -21,3 +22,4 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
   
   send_event('github_open_pr', { header: "Pull Requests", pulls: pulls.first(7) })
 end
+=end

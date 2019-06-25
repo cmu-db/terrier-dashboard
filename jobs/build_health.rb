@@ -1,16 +1,6 @@
 SUCCESS = 'Successful'
 FAILED = 'Failed'
 
-def api_functions
-  return {
-    'Travis' => lambda { |build_id| get_travis_build_health build_id},
-    'TeamCity' => lambda { |build_id| get_teamcity_build_health build_id},
-    'Bamboo' => lambda { |build_id| get_bamboo_build_health build_id},
-    'Go' => lambda { |build_id| get_go_build_health build_id},
-    'Jenkins' => lambda { |build_id| get_jenkins_build_health build_id}
-  }
-end
-
 def get_url(url, auth = nil)
   uri = URI.parse(url)
   http = Net::HTTP.new(uri.host, uri.port)
@@ -25,10 +15,10 @@ def get_url(url, auth = nil)
   end
 
   response = http.request(request)
-  #puts (response.code)
+  
   # check for errors
   if (response.code != '200') 
-    puts ('cannot access: ' + url + ' -- there is likely an issue with the api itself')
+    puts ('cannot access: ' + url + ' -- the build probably did not run properly')
     return nil
   end
 
@@ -37,23 +27,6 @@ end
 
 def calculate_health(successful_count, count)
   return (successful_count / count.to_f * 100).round
-end
-
-def get_build_health(build)
-  api_functions[build['server']].call(build['id'])
-end
-
-def get_teamcity_build_health(build_id)
-  builds = TeamCity.builds(count: 25, buildType: build_id)
-  latest_build = TeamCity.build(id: builds.first['id'])
-  successful_count = builds.count { |build| build['status'] == 'SUCCESS' }
-
-  return {
-    name: latest_build['buildType']['name'],
-    status: latest_build['status'] == 'SUCCESS' ? SUCCESS : FAILED,
-    link: builds.first['webUrl'],
-    health: calculate_health(successful_count, builds.count)
-  }
 end
 
 def get_travis_build_health(build_id)
@@ -72,49 +45,6 @@ def get_travis_build_health(build_id)
   }
 end
 
-def get_go_pipeline_status(pipeline)
-  return pipeline['stages'].index { |s| s['result'] == 'Failed' } == nil ? SUCCESS : FAILED
-end
-
-def get_go_build_health(build_id)
-  url = "#{Builds::BUILD_CONFIG['goBaseUrl']}/go/api/pipelines/#{build_id}/history"
-
-  if ENV['GO_USER'] != nil then
-    auth = [ ENV['GO_USER'], ENV['GO_PASSWORD'] ]
-  end
-
-  build_info = get_url url, auth
-
-  results = build_info['pipelines']
-  successful_count = results.count { |result| get_go_pipeline_status(result) == SUCCESS }
-  latest_pipeline = results[0]
-
-  return {
-    name: latest_pipeline['name'],
-    status: get_go_pipeline_status(latest_pipeline),
-    link: "#{Builds::BUILD_CONFIG['goBaseUrl']}/go/tab/pipeline/history/#{build_id}",
-    health: calculate_health(successful_count, results.count),
-  }
-end
-
-def get_bamboo_build_health(build_id)
-  url = "#{Builds::BUILD_CONFIG['bambooBaseUrl']}/rest/api/latest/result/#{build_id}.json?expand=results.result"
-  build_info = get_url url
-
-  results = build_info['results']['result']
-  successful_count = results.count { |result| result['state'] == 'Successful' }
-  latest_build = results[0]
-
-  return {
-    name: latest_build['plan']['shortName'],
-    status: latest_build['state'] == 'Successful' ? SUCCESS : FAILED,
-    duration: latest_build['buildDurationDescription'],
-    link: "#{Builds::BUILD_CONFIG['bambooBaseUrl']}/browse/#{latest_build['key']}",
-    health: calculate_health(successful_count, results.count),
-    time: latest_build['buildRelativeTime']
-  }
-end
-
 def get_jenkins_build_health(build_id)
   url = JENKINS_URL + '/api/json?tree=builds[url]'
 
@@ -129,7 +59,7 @@ def get_jenkins_build_health(build_id)
   builds = build_info['builds']
   successful_count = 0
   failure_count = 0
-  #logger = Logger.new(STDOUT)
+  
   for build in builds do
     build_url = build['url'] + '/api/json?tree=result'
     single_build_info = get_url URI.encode(build_url), auth
@@ -151,8 +81,10 @@ def get_jenkins_build_health(build_id)
   if (latest_build_info == nil)
     raise StandardError, 'cannot access ' + latest_build_url
   end
-  #logger.info(successful_count)
-  #logger.info(failure_count)
+  if (latest_build_info['result'] == nil)
+    puts 'issue -- cannot get result property at ' + latest_build_url
+  end
+  #puts latest_build_info
 
   return {
     name: 'Jenkins',
@@ -164,8 +96,7 @@ def get_jenkins_build_health(build_id)
   }
 end
 
-SCHEDULER.every '20s' do
-  Builds::BUILD_LIST.each do |build|
-    send_event(build['id'], get_build_health(build))
-  end
+SCHEDULER.every '1h', :first_in => 0 do |job|
+  send_event("travis", get_travis_build_health("cmu-db/terrier"))
+  send_event("jenkins", get_jenkins_build_health("not used currently"))
 end

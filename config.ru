@@ -1,3 +1,4 @@
+
 require 'dotenv'
 Dotenv.load
 
@@ -16,13 +17,6 @@ end
 
 map Sinatra::Application.assets_prefix do
   run Sinatra::Application.sprockets
-end
-
-if Builds::BUILD_CONFIG['teamCityBaseUrl']
-  require 'teamcity'
-  TeamCity.configure do |config|
-    config.endpoint = Builds::BUILD_CONFIG['teamCityBaseUrl'] + '/app/rest?guest=1'
-  end
 end
 
 run Sinatra::Application

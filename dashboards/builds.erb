@@ -5,11 +5,7 @@
   });
 </script>
 
-<script type='text/javascript'>
- $(function() {
-   Dashing.gridsterLayout('[{"col":1,"row":1,"size_x":1,"size_y":1},{"col":2,"row":1,"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":1,"size_y":1},{"col":1,"row":2,"size_x":1,"size_y":1},{"col":4,"row":1,"size_x":1,"size_y":1}]')
- });
- </script>
+
 
 <% content_for :title do %>NoisePage Dashboard<% end %>
 <div class="gridster">
@@ -18,39 +14,27 @@
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
       <div data-view="Image" data-image0="/cmu-db-group-dark.svg" data-image1="/noisepage-full.png"></div>
     </li>
-    <%# Travis CI & Jenkins Build status %>
-    <%
-      if (Builds::BUILD_LIST.count > 4) then
-        num_cols = 4
-        widget_size = 1
-      else
-        num_cols = 4
-        widget_size = 1
-      end
-    %>
-    <% Builds::BUILD_LIST.each_with_index do |build, index| %>
-      <% build_num = index + 1 %>
-      <li data-row="<%= build_num % num_cols == 0 ? build_num / num_cols : build_num / num_cols + 1 %>"
-        data-col="<%= build_num % num_cols == 0 ? num_cols : build_num % num_cols %>"
-        data-sizex="<%= widget_size %>" data-sizey="1">
-        <div data-id="<%= build['id'] %>" data-server="<%= build['server'] %>"
-          data-view="BuildWindow"></div>
-      </li>
-    <% end %>
-    <%# Github Pull Request  %>
-    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="github_open_pr" data-view="PullRequests" ></div>
+    <%# Travis %>
+    <li data-row="1" data-col="2" data-sizex="1" data-sizey="1">
+      <div data-id="travis" data-server="Travis" data-view="BuildWindow" </div>
+    </li>
+    <%# Jenkins %>
+    <li data-row="1" data-col="3" data-sizex="1" data-sizey="1">
+      <div data-id="jenkins" data-server="Jenkins" data-view="BuildWindow" </div>
     </li>
     <%# Coverage %>
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
       <div data-id="coverage" data-view="Hotmeter" data-title='Coverage' data-min='0' data-max='100' data-moreinfo="more info" data-cool="20" data-warm="90" data-suffix="%"></div>
     </li>
-    <li data-row="2" data-col="2" data-sizex="2" data-sizey="1">
+    <%# Coverage Line Chart %>
+    <li data-row="2" data-col="1" data-sizex="3" data-sizey="1">
       <div data-id="coverage_line_chart" data-view ="LineChart" data-title="Coverage" data-moreinfo=""></div>
     </li>
-    <li data-row="3" data-col="2" data-sizex="2" data-sizey="1">
+    <%# TPCC Line Chart %>
+    <li data-row="3" data-col="1" data-sizex="3" data-sizey="1">
       <div data-id="tpcc_line_chart" data-view ="LineChart" data-title="TPC-C (Micro)" data-moreinfo=""></div>
     </li>
+    <%# Leaderboard %>
     <li data-row="2" data-col="4" data-sizex="2" data-sizey="3">
       <div 
         data-id="leaderboard" 
