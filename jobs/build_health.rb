@@ -1,9 +1,12 @@
 SUCCESS = 'Successful'
 FAILED = 'Failed'
 
-def get_url(url, auth = nil)
+def get_url(url, auth=nil, retries=3)
   uri = URI.parse(url)
   http = Net::HTTP.new(uri.host, uri.port)
+  # response will timeout after 3 seconds, change if too fast
+  http.open_timeout = 3
+
   if uri.scheme == 'https'
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
@@ -23,6 +26,13 @@ def get_url(url, auth = nil)
   end
 
   return JSON.parse(response.body)
+
+rescue Net::OpenTimeout => e
+  puts "TRY #{4-retries} ERROR #{e}: timed out while trying to connect #{url}. Trying again..."
+  if retries <= 1
+    raise
+  end
+  get_url(url, auth, retries-1)
 end
 
 def calculate_health(successful_count, count)

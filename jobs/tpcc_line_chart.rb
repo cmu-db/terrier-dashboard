@@ -12,14 +12,14 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
   labels = []
   for build in builds do
     build_url = build['url']
-    
     build_response = get_url(build_url + 'artifact/script/micro_bench/large_transaction_benchmark.json')
     #puts (build_response)
     if (build_response == nil)
       labels.push("no_data")
       tpcc_data.push(0)
     else
-      labels.push(build_response['context']['date'][0,10])
+      date = Date.parse(build_response['context']['date'][0,10])
+      labels.push(date.strftime("%b %d"))
       tpcc_data.push(build_response['benchmarks'][0]['items_per_second'].to_i)
     end
   end
@@ -34,5 +34,7 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
     }
   ]
 
-  send_event('tpcc_line_chart', { labels: labels, datasets: data })
+  cornertext = "Change from start: " + ((tpcc_data[tpcc_data.length-1] - tpcc_data[0]).to_f/tpcc_data[tpcc_data.length-1]).round(2).to_s + "%"
+
+  send_event('tpcc_line_chart', { labels: labels, datasets: data , cornertext: cornertext})
 end

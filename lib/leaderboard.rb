@@ -43,16 +43,16 @@ class Leaderboard
 				'commits_deletions_loc_threshold'=>1000,
 			},
 			:weighting => {
-				'issues_opened'=>5,
-				'issues_closed'=>5,
-				'pulls_opened'=>10,
-				'pulls_closed'=>5,
-				'pulls_comments'=>1,
-				'issues_comments'=>1,
-				'commits_comments'=>1,
+				'issues_opened'=>0,
+				'issues_closed'=>0,
+				'pulls_opened'=>0,
+				'pulls_closed'=>0,
+				'pulls_comments'=>0,
+				'issues_comments'=>0,
+				'commits_comments'=>0,
 				# 'commits_additions'=>0.005,
 				# 'commits_deletions'=>0.005,
-				'commits'=>20
+				'commits'=>0
 			},
 			:event_titles => {
 				'commits' => 'commits',
@@ -117,15 +117,20 @@ class Leaderboard
 						desc.push "#{v} #{event_title} * #{weight} points" if v and v.to_i > 0
 						c += (v.to_f * weight.to_f).to_i
 					end
-
+=begin
 				# Sum up weighted and capped scores for lines of code added and deleted
 				['additions','deletions'].each do |type|
 					if period_data.has_key?("commits_#{type}") and opts.edits_weighting and opts.edits_weighting["commits_#{type}_max"]
 						loc_actual = period_data["commits_#{type}"]
+						puts "loc actual" + loc_actual.to_s
 						loc_threshold = opts.edits_weighting["commits_#{type}_loc_threshold"]
+						puts "loc threshold" + loc_threshold.to_s
 						loc_counted = [loc_actual,loc_threshold].min
+						puts "loc counted" + loc_counted.to_s
 						score_max = opts.edits_weighting["commits_#{type}_max"]
+						puts "score max" + score_max.to_s
 						score_actual = (score_max * (loc_counted.to_f/loc_threshold.to_f)).to_i
+						puts "score actual" + score_actual.to_s
 						event_title = opts.event_titles.has_key?("commits_#{type}") ? opts.event_titles["commits_#{type}"] : "commits_#{type}"
 						desc.push(
 							"#{event_title} #{score_actual} points (<em>actual: #{loc_actual}, " +
@@ -135,7 +140,7 @@ class Leaderboard
 						period_data['score'] += score_actual
 					end
 				end
-
+=end
 				period_data['desc'] = desc.join('<br>+ ')
 			end
 			actors_scored[actor] = {

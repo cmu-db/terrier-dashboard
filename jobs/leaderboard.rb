@@ -30,6 +30,8 @@ SCHEDULER.every '1h', :first_in => '1s' do |job|
 		:edits_weighting=>edits_weighting,
 		:skip_orga_members=>(ENV['LEADERBOARD_SKIP_ORGA_MEMBERS'].split(',') if ENV['LEADERBOARD_SKIP_ORGA_MEMBERS'])
 	)
+	# First 5 on leaderboard
+	actors = actors[0..4]
 
 	rows = actors.map do |actor|
 		actor_github_info = backend.user(actor[0])
@@ -59,8 +61,8 @@ SCHEDULER.every '1h', :first_in => '1s' do |job|
 			trend_class: GithubDashing::Helper.trend_class(trend),
 			github: actor_github_info
 		}
-	end if actors
-
+	end #if actors
+	
 	send_event('leaderboard', {
 		rows: rows,
 		date_since: date_since.strftime("#{date_since.day.ordinalize} %b"),

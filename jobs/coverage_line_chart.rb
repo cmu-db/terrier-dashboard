@@ -9,7 +9,7 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
   d = today - NUM_DAYS_TRACKED
   while d < today do
     d += 1
-    labels.push(d)
+    labels.push(d.strftime("%b %d"))
   end
 
   pageNumber = 1
@@ -68,5 +68,7 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
     }
   ]
 
-  send_event('coverage_line_chart', { labels: labels, datasets: data })
+  cornertext = "Current coverage: " + covData[covData.length-1].to_f.round(2).to_s + "%"
+
+  send_event('coverage_line_chart', { labels: labels, datasets: data, cornertext: cornertext })
 end
