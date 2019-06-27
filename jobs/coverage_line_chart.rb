@@ -62,8 +62,8 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
     {
       label: 'Coverage',
       data: covData,
-      backgroundColor: [ 'rgba(255, 99, 132, 0.2)' ] * labels.length,
-      borderColor: [ 'rgba(255, 99, 132, 1)' ] * labels.length,
+      backgroundColor: [ 'rgba(56, 255, 195, 0.2)' ] * labels.length,
+      borderColor: [ 'rgba(56, 255, 195, 1)' ] * labels.length,
       borderWidth: 1,
     }
   ]
