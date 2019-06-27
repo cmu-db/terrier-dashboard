@@ -68,7 +68,7 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
     }
   ]
 
-  cornertext = "Current coverage: " + covData[covData.length-1].to_f.round(2).to_s + "%"
+  cornertext = "Latest: " + covData[covData.length-1].to_f.round(1).to_s + "%"
 
   send_event('coverage_line_chart', { labels: labels, datasets: data, cornertext: cornertext })
 end
