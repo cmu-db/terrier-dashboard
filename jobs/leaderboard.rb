@@ -65,7 +65,7 @@ SCHEDULER.every '1h', :first_in => '1s' do |job|
 	
 	send_event('leaderboard', {
 		rows: rows,
-		date_since: date_since.strftime("#{date_since.day.ordinalize} %b"),
-		date_until: date_until.strftime("#{date_until.day.ordinalize} %b"),
+		date_since: date_since.strftime("%b #{date_since.day}"),
+		date_until: date_until.strftime("%b #{date_until.day}"),
 	})
 end
