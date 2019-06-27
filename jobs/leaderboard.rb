@@ -37,9 +37,9 @@ SCHEDULER.every '1h', :first_in => '1s' do |job|
 		actor_github_info = backend.user(actor[0])
 
 		if actor_github_info['avatar_url']
-			actor_icon = actor_github_info['avatar_url'] + "&s=32"
+			actor_icon = actor_github_info['avatar_url'] + "&s=128"
 		elsif actor_github_info['email']
-			actor_icon = "http://www.gravatar.com/avatar/" + Digest::MD5.hexdigest(actor_github_info['email'].downcase) + "?s=24"
+			actor_icon = "http://www.gravatar.com/avatar/" + Digest::MD5.hexdigest(actor_github_info['email'].downcase) + "?s=128"
 		else
 			actor_icon = ''
 		end
