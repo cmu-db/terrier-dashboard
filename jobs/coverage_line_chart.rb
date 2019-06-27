@@ -60,7 +60,7 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
 
   data = [
     {
-      label: 'Test Code Coverage',
+      label: 'Code',
       data: covData,
       backgroundColor: [ 'rgba(255, 99, 132, 0.2)' ] * labels.length,
       borderColor: [ 'rgba(255, 99, 132, 1)' ] * labels.length,
