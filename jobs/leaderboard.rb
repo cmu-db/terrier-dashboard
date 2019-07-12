@@ -30,8 +30,8 @@ SCHEDULER.every '1h', :first_in => '1s' do |job|
 		:edits_weighting=>edits_weighting,
 		:skip_orga_members=>(ENV['LEADERBOARD_SKIP_ORGA_MEMBERS'].split(',') if ENV['LEADERBOARD_SKIP_ORGA_MEMBERS'])
 	)
-	# First 5 on leaderboard
-	actors = actors[0..4]
+	# First 9 on leaderboard
+	actors = actors[0..8]
 
 	rows = actors.map do |actor|
 		actor_github_info = backend.user(actor[0])

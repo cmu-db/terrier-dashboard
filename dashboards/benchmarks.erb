@@ -1,0 +1,48 @@
+<script type='text/javascript'>
+  $(function() {
+    Dashing.widget_base_dimensions = [410, 370];
+    Dashing.numColumns = 6
+  });
+</script>
+
+<% content_for :title do %>NoisePage Dashboard<% end %>
+<div class="gridster">
+  <ul>
+    <%# Benchmark1 %>
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="benchmark1" data-view ="LineChart" data-title="Benchmark1" data-moreinfo=""></div>
+    </li>
+    <%# Benchmark2 %>
+    <li data-row="1" data-col="3" data-sizex="2" data-sizey="1">
+      <div data-id="benchmark2" data-view ="LineChart" data-title="Benchmark2" data-moreinfo=""></div>
+    </li>
+    <%# Benchmark3 %>
+    <li data-row="1" data-col="5" data-sizex="2" data-sizey="1">
+      <div data-id="benchmark3" data-view ="LineChart" data-title="Benchmark3" data-moreinfo=""></div>
+    </li>
+    <%# Benchmark4 %>
+    <li data-row="2" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="benchmark4" data-view ="LineChart" data-title="Benchmark4" data-moreinfo=""></div>
+    </li>
+    <%# Benchmark5 %>
+    <li data-row="2" data-col="3" data-sizex="2" data-sizey="1">
+      <div data-id="benchmark5" data-view ="LineChart" data-title="Benchmark5" data-moreinfo=""></div>
+    </li>
+    <%# Benchmark6 %>
+    <li data-row="2" data-col="5" data-sizex="2" data-sizey="1">
+      <div data-id="benchmark6" data-view ="LineChart" data-title="Benchmark6" data-moreinfo=""></div>
+    </li>
+    <%# Benchmark7 %>
+    <li data-row="3" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="benchmark7" data-view ="LineChart" data-title="Benchmark7" data-moreinfo=""></div>
+    </li>
+    <%# Benchmark8 %>
+    <li data-row="3" data-col="3" data-sizex="2" data-sizey="1">
+      <div data-id="benchmark8" data-view ="LineChart" data-title="Benchmark8" data-moreinfo=""></div>
+    </li>
+    <%# Benchmark9 %>
+    <li data-row="3" data-col="5" data-sizex="2" data-sizey="1">
+      <div data-id="benchmark9" data-view ="LineChart" data-title="Benchmark9" data-moreinfo=""></div>
+    </li>
+  </ul>
+</div>
