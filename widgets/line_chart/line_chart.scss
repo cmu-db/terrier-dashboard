@@ -26,8 +26,9 @@ $title-position:    center;
     }
     @else {
       position: relative;
+      margin-left: 100px;
     }
-
+    font-size: 40px;
     z-index: 1;
     color: $title-color;
   }

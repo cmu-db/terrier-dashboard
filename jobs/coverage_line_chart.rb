@@ -2,6 +2,8 @@ require 'date'
 require 'net/http'
 require 'json'
 
+NUM_DAYS_TRACKED = 30
+
 SCHEDULER.every '1h', :first_in => 0 do |job|
   # Get the labels
   labels = []
@@ -13,7 +15,7 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
   end
 
   pageNumber = 1
-  # get_url is defined in build_hearth.rb by the way
+  # get_url is defined in _.rb by the way
   response = get_url(CODECOV_URL + '/commits?page=' + pageNumber.to_s);
   if (response == nil)
     raise StandardError, 'cannot get ' + CODECOV_URL + '/commits?page=' + pageNumber.to_s
@@ -28,7 +30,6 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
       if date <= minDay && commit['parent_totals'] != nil
         covData[0] = commit['parent_totals']['c']
         i = 0
-      
         while i < NUM_DAYS_TRACKED do
           if covData[i] == 0
             covData[i] = covData[i-1]
