@@ -34,7 +34,7 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
     }
   ]
 
-  cornertext = "30 Day Trend: " + (((tpcc_data[tpcc_data.length-1] - tpcc_data[0]).to_f/tpcc_data[tpcc_data.length-1])*100).round(2).to_s + "%"
+  cornertext = "30 Day Trend: " + (((tpcc_data[tpcc_data.length-1] - tpcc_data[0]).to_f/tpcc_data[0])*100).round(2).to_s + "%"
 
   send_event('tpcc_line_chart', { labels: labels, datasets: data , cornertext: cornertext})
 end
