@@ -9,7 +9,19 @@ def get_travis_build_health(build_id)
   url = "https://api.travis-ci.org/repos/#{build_id}/builds?event_type=push"
   results = get_url url
   successful_count = results.count { |result| result['result'] == 0 }
-  latest_build = results[0]
+  #latest_build = results[0]
+  latest_build = nil
+  for result in results do
+    if result['branch'] == 'master'
+      latest_build = result
+      break
+    end
+  end
+  if latest_build == nil
+    puts ("Cannot find the latest travis build in the master branch. This might happen if there are no builds for the master branch in the latest 25 or so builds.")
+  else
+    puts ("Lastest Travis master build is build#" + latest_build['number'])
+  end
 
   return {
     name: 'Travis',

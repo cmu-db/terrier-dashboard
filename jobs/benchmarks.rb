@@ -9,14 +9,7 @@ benchmark_index = 0
 SCHEDULER.every '1h', :first_in => 0 do |job|
 	Thread.kill(thread)
 	benchmark_titles = []
-	# Get the labels
 	labels = []
-	today = Date.today
-	d = today - NUM_DAYS_TRACKED
-	while d < today do
-		d += 1
-		labels.push(d.strftime("%b %d"))
-	end
 	# First get the number of benchmarks and title of benchmarks
 	last_build_response = get_url(JENKINS_NIGHTLY_URL + '/lastSuccessfulBuild/api/json?')
 	if (last_build_response == nil)
@@ -38,6 +31,7 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
 			benchmark_titles.push(title)
 		end
 	end
+	puts ("There are " + num_benchmarks.to_s + " benchmarks available.")
 	# Initialize 2d array
 	all_data = Array.new(num_benchmarks) {Array.new()}
 	# Get all the benchmark data
@@ -50,8 +44,10 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
 		build_url = build['url']
 		build_response = get_url(build_url + 'api/json?')
 		if (build_response == nil || build_response['artifacts'] == [])
+			labels.push("no_data")
 			all_data.each { |arr| arr.push(0) }
 		else
+			got_date_already = false
 			# artifacts and suites are the same thing
 			artifacts = build_response['artifacts']
 			i = 0
@@ -65,6 +61,12 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
 				for test in tests do
 					all_data[i].push(test['items_per_second'].to_i)
 					i += 1
+				end
+				# get date if haven't gotten it yet
+				if not got_date_already
+					date = Date.parse(suite_response['context']['date'][0,10])
+					labels.push(date.strftime("%b %d"))
+					got_date_already = true
 				end
 			end
 		end
@@ -82,8 +84,8 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
 					{
 						label: benchmark_titles[benchmark_index],
 						data: bench_data,
-						backgroundColor: [ "rgba(#{random_r}, #{random_g}, #{random_b}, 0.4)" ] * NUM_DAYS_TRACKED,
-						borderColor: [ "rgba(#{random_r}, #{random_g}, #{random_b}, 1)" ] * NUM_DAYS_TRACKED,
+						backgroundColor: [ "rgba(#{random_r}, #{random_g}, #{random_b}, 0.4)" ] * labels.length,
+						borderColor: [ "rgba(#{random_r}, #{random_g}, #{random_b}, 1)" ] * labels.length,
 						borderWidth: 1,
 					}
 				]

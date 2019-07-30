@@ -27,7 +27,7 @@ def get_url(url, auth=nil, retries=3)
     puts ('cannot access: ' + url + ' -- the build probably did not run properly')
     return nil
   end
-
+  
   return JSON.parse(response.body)
 
 rescue Net::OpenTimeout => e
