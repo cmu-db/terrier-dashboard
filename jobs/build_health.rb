@@ -20,7 +20,7 @@ def get_travis_build_health(build_id)
   if latest_build == nil
     puts ("Cannot find the latest travis build in the master branch. This might happen if there are no builds for the master branch in the latest 25 or so builds.")
   else
-    puts ("Lastest Travis master build is build#" + latest_build['number'])
+    #puts ("Lastest Travis master build is build#" + latest_build['number'])
   end
 
   return {

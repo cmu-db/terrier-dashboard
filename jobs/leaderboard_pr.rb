@@ -11,7 +11,7 @@ SCHEDULER.every '1h', :first_in => '1s' do |job|
 	backend = GithubBackend.new()
 	leaderboard = Leaderboard.new(backend)
 
-	leaderboard_weighting = "issues_opened=0,issues_closed=0,pulls_opened=0,pulls_closed=0,pulls_comments=0,issues_comments=0,commits_comments=0,commits=1"
+	leaderboard_weighting = "issues_opened=0,issues_closed=0,pulls_opened=1,pulls_closed=0,pulls_comments=0,issues_comments=0,commits_comments=0,commits=0"
 
 	weighting = leaderboard_weighting.split(',')
 		.inject({}) {|c,pair|c.merge Hash[*pair.split('=')]}
@@ -32,8 +32,8 @@ SCHEDULER.every '1h', :first_in => '1s' do |job|
 		:edits_weighting=>edits_weighting,
 		:skip_orga_members=>(ENV['LEADERBOARD_SKIP_ORGA_MEMBERS'].split(',') if ENV['LEADERBOARD_SKIP_ORGA_MEMBERS'])
 	)
-	# First 9 on leaderboard
-	actors = actors[0..8]
+	# First 11 on leaderboard
+	actors = actors[0..10]
 
 	rows = actors.map do |actor|
 		actor_github_info = backend.user(actor[0])
@@ -65,7 +65,7 @@ SCHEDULER.every '1h', :first_in => '1s' do |job|
 		}
 	end #if actors
 	
-	send_event('leaderboard', {
+	send_event('leaderboard_pr', {
 		rows: rows,
 		date_since: date_since.strftime("%b #{date_since.day}"),
 		date_until: date_until.strftime("%b #{date_until.day}"),

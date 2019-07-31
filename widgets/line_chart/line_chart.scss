@@ -33,6 +33,16 @@ $title-position:    center;
     color: $title-color;
   }
 
+  .suite {
+    position: relative;
+    margin-left: 100px;
+    margin-bottom: 0px;
+    font-weight: bold;
+    font-size: 40px;
+    z-index: 1;
+    color: $title-color;
+  }
+
   .more-info {
     color: $moreinfo-color;
   }

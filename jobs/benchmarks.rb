@@ -6,9 +6,12 @@ thread = Thread.new {}
 num_benchmarks_on_page = 9
 benchmark_index = 0
 
+NUMBER_SECONDS_PER_ROTATION = 30
+
 SCHEDULER.every '1h', :first_in => 0 do |job|
 	Thread.kill(thread)
 	benchmark_titles = []
+	benchmark_suites = []
 	labels = []
 	# First get the number of benchmarks and title of benchmarks
 	last_build_response = get_url(JENKINS_NIGHTLY_URL + '/lastSuccessfulBuild/api/json?')
@@ -27,8 +30,8 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
 		for test in tests do
 			num_benchmarks += 1
 			names = test['name'].split('/')
-			title = names[0] + ":\n" + names[1]
-			benchmark_titles.push(title)
+			benchmark_suites.push(names[0]+":")
+			benchmark_titles.push(names[1])
 		end
 	end
 	puts ("There are " + num_benchmarks.to_s + " benchmarks available.")
@@ -82,7 +85,7 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
 				random_b = rand(256)
 				data = [
 					{
-						label: benchmark_titles[benchmark_index],
+						label: benchmark_titles[benchmark_index], #this is actually a red herring... if you want to change the title, look below at the send_event
 						data: bench_data,
 						backgroundColor: [ "rgba(#{random_r}, #{random_g}, #{random_b}, 0.4)" ] * labels.length,
 						borderColor: [ "rgba(#{random_r}, #{random_g}, #{random_b}, 1)" ] * labels.length,
@@ -91,7 +94,7 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
 				]
 				trendPercentage = (((bench_data[bench_data.length-1] - bench_data[0]).to_f/bench_data[0])*100).round(2)
 				cornertext = "30 Day Trend: " + trendPercentage.to_s + "%"
-				send_event('benchmark'+(i+1).to_s, { title: benchmark_titles[benchmark_index], labels: labels, datasets: data , cornertext: cornertext, trendPercentage: trendPercentage})
+				send_event('benchmark'+(i+1).to_s, { title: benchmark_titles[benchmark_index], suite: benchmark_suites[benchmark_index], labels: labels, datasets: data , cornertext: cornertext, trendPercentage: trendPercentage})
 				i += 1
 				benchmark_index += 1
 				if benchmark_index == num_benchmarks
@@ -100,7 +103,7 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
 			end
 			#puts ('Benchmarks page sent')
 			# number of seconds to sleep
-			sleep(30)
+			sleep(NUMBER_SECONDS_PER_ROTATION)
 		end
 	}
 end

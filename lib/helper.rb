@@ -9,7 +9,10 @@ module GithubDashing
 			if last.to_f > 0 # avoid division by infinity
 				trend = (current.to_f / last.to_f)*100-100
 				sign = (trend > 0 and use_sign) ? '+' : ''
-			else 
+			elsif last.to_f == 0 and current.to_f > 0
+				trend = 100
+				sign = (trend > 0 and use_sign) ? '+' : ''
+			else
 				trend = 0
 				sign = ''
 			end

@@ -32,8 +32,8 @@ SCHEDULER.every '1h', :first_in => '1s' do |job|
 		:edits_weighting=>edits_weighting,
 		:skip_orga_members=>(ENV['LEADERBOARD_SKIP_ORGA_MEMBERS'].split(',') if ENV['LEADERBOARD_SKIP_ORGA_MEMBERS'])
 	)
-	# First 9 on leaderboard
-	actors = actors[0..8]
+	# First 11 on leaderboard
+	actors = actors[0..10]
 
 	rows = actors.map do |actor|
 		actor_github_info = backend.user(actor[0])
@@ -65,7 +65,7 @@ SCHEDULER.every '1h', :first_in => '1s' do |job|
 		}
 	end #if actors
 	
-	send_event('leaderboard', {
+	send_event('leaderboard_commits', {
 		rows: rows,
 		date_since: date_since.strftime("%b #{date_since.day}"),
 		date_until: date_until.strftime("%b #{date_until.day}"),

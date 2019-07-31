@@ -1,0 +1,25 @@
+<script type='text/javascript'>
+  $(function() {
+    Dashing.widget_base_dimensions = [384, 432];
+    Dashing.numColumns = 6;
+  });
+</script>
+
+<% content_for :title do %>NoisePage Dashboard<% end %>
+<div class="gridster">
+  <ul>
+    <%# Commits Leaderboard %>
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="3">
+      <div data-id="leaderboard_commits" data-view ="Leaderboard" data-title="Commits Leaderboard" data-unordered="true"></div>
+    </li>
+    <%# Pull Requests Leaderboard %>
+    <li data-row="1" data-col="3" data-sizex="2" data-sizey="3">
+      <div data-id="leaderboard_pr" data-view ="Leaderboard" data-title="Pull Requests Leaderboard" data-unordered="true"></div>
+    </li>
+    <%# Issues Leaderboard %>
+    <li data-row="1" data-col="5" data-sizex="2" data-sizey="3">
+      <div data-id="leaderboard_issues" data-view ="Leaderboard" data-title="Issues Leaderboard"data-unordered="true"></div>
+    </li>
+    
+  </ul>
+</div>
