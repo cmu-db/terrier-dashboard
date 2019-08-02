@@ -1,4 +1,4 @@
-class Dashing.LineChart extends Dashing.Widget
+class Dashing.LineChartCoverage extends Dashing.Widget
 
   ready: ->
     # Margins: zero if not set or the same as the opposite margin
@@ -63,7 +63,8 @@ class Dashing.LineChart extends Dashing.Widget
             ticks: {
                 fontColor: '#D3D3D3',
                 fontSize: 22,
-                min: 0
+                min: 80,
+                max: 100
             }
           }]
         }

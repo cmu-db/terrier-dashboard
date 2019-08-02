@@ -1,0 +1,60 @@
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color:  #303030;
+
+$title-color:       rgba(255, 255, 255, .7);
+$moreinfo-color:    rgba(255, 255, 255, .7);
+$updateat-color:    rgba(255, 255, 255, .7);
+
+// If you want the title at the top, set the position to 'top'
+$title-position:    center;
+
+// ----------------------------------------------------------------------------
+// Widget-line-chart styles
+// ----------------------------------------------------------------------------
+.widget-line-chart-coverage {
+
+  background-color: $background-color;
+
+  .title {
+    @if $title-position == 'top' {
+      left: 0;
+      right: 0;
+      top: 10px;
+      position: absolute;
+    }
+    @else {
+      position: relative;
+      margin-left: 100px;
+    }
+    font-size: 40px;
+    z-index: 1;
+    color: $title-color;
+  }
+
+  .suite {
+    position: relative;
+    margin-left: 100px;
+    margin-bottom: 0px;
+    font-weight: bold;
+    font-size: 40px;
+    z-index: 1;
+    color: $title-color;
+  }
+
+  .more-info {
+    color: $moreinfo-color;
+  }
+
+  .updated-at {
+    color: $updateat-color;
+  }
+
+  .corner-text{
+    position: absolute;
+    right: 30px;
+    top: 20px;
+  }
+
+}
