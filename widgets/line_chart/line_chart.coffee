@@ -56,7 +56,8 @@ class Dashing.LineChart extends Dashing.Widget
           xAxes: [{
             ticks: {
                 fontColor: '#DCDCDC',
-                fontSize: 14
+                fontSize: 14,
+                autoSkip: false
             }
           }],
           yAxes: [{
