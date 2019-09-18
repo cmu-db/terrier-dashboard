@@ -9,11 +9,6 @@ class Dashing.LineChart extends Dashing.Widget
     bottom = @get('bottomMargin') || top
 
     container = $(@node).parent()
-    
-    # changing the background color of line chart to red if trendPercentage below minBound
-    minBound = -10;
-    if (@get('trendPercentage') < minBound)
-      @node.style.backgroundColor = "red"
 
     # Gross hacks. Let's fix this.
     width = (Dashing.widget_base_dimensions[0] * container.data("sizex")) + Dashing.widget_margins[0] * 2 * (container.data("sizex") - 1) - left - right
@@ -72,6 +67,13 @@ class Dashing.LineChart extends Dashing.Widget
     });
 
   onData: (data) ->
+    # changing the background color of line chart to red if trendPercentage below minBound
+    minBound = -10;
+    if (@get('trendPercentage') < minBound)
+      @node.style.backgroundColor = "red"
+    else
+      @node.style.backgroundColor = "#303030"
+
     # Load new values and update chart
     if @myChart
       if data.labels then @myChart.data.labels = data.labels
