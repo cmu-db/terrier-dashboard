@@ -1,5 +1,5 @@
 *.gem
-Gemfile.lock
+
 *.rbc
 /.config
 /coverage/
