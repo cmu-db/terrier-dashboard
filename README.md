@@ -5,6 +5,8 @@ https://nameless-lake-50241.herokuapp.com/builds
 
 https://nameless-lake-50241.herokuapp.com/benchmarks
 
+https://nameless-lake-50241.herokuapp.com/leaderboards
+
 ## Get started
 
 1. Install [smashing](http://smashing.github.io/)
