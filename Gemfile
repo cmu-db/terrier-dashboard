@@ -4,7 +4,8 @@ gem 'smashing'
 gem 'dotenv'
 gem 'octokit'
 gem 'activesupport'
-gem "sentry-raven"
+gem 'sentry-raven'
+gem 'tzinfo-data'
 
 group :test do
   gem 'rspec'
