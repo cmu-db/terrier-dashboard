@@ -105,7 +105,11 @@ SCHEDULER.every '1h', :first_in => 0 do |job|
 						borderWidth: 1,
 					}
 				]
-				trendPercentage = (((bench_data[bench_data.length-1] - bench_data[0]).to_f/bench_data[0])*100).round(2)
+				firstRelevantIdx = 0
+				while firstRelevantIdx < bench_data.length-1 && bench_data[firstRelevantIdx] == 0 do
+					firstRelevantIdx += 1
+				end
+				trendPercentage = (((bench_data[bench_data.length-1] - bench_data[firstRelevantIdx]).to_f/bench_data[firstRelevantIdx])*100).round(2)
 				cornertext = "30 Day Trend: " + trendPercentage.to_s + "%"
 				send_event('benchmark'+(i+1).to_s, { title: benchmark_titles[benchmark_index], suite: benchmark_suites[benchmark_index], labels: labels, datasets: data , cornertext: cornertext, trendPercentage: trendPercentage})
 				i += 1
